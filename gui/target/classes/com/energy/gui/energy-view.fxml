@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.energy.gui.EnergyController"
+      spacing="20" prefWidth="600" prefHeight="450"
+      style="-fx-background-color: #f5f5f5; -fx-padding: 20;">
+
+    <VBox spacing="5" alignment="CENTER_LEFT">
+        <HBox spacing="20">
+            <Text text="Community Pool" style="-fx-font-size: 14;"/>
+            <Label fx:id="communityPoolLabel" text="78.54% used" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        </HBox>
+        <Separator/>
+        <HBox spacing="50">
+            <Text text="Grid Portion" style="-fx-font-size: 14;"/>
+            <Label fx:id="gridPortionLabel" text="7.23%" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        </HBox>
+        <Separator/>
+        <Button fx:id="refreshButton" text="Refresh" style="-fx-font-size: 14; -fx-pref-width: 100;"/>
+        <Separator/>
+    </VBox>
+
+
+    <VBox spacing="5" alignment="CENTER_LEFT">
+        <HBox spacing="100">
+            <Label text="Start"/>
+            <HBox spacing="5">
+                <DatePicker fx:id="startDatePicker" style="-fx-pref-width: 120;"/>
+                <ComboBox fx:id="startHourComboBox" style="-fx-pref-width: 80;"/>
+            </HBox>
+        </HBox>
+
+        <HBox spacing="105">
+            <Label text="End"/>
+            <HBox spacing="5">
+                <DatePicker fx:id="endDatePicker" style="-fx-pref-width: 120;"/>
+                <ComboBox fx:id="endHourComboBox" style="-fx-pref-width: 80;"/>
+            </HBox>
+        </HBox>
+
+        <Button fx:id="showDataButton" text="Show Data" style="-fx-font-size: 14; -fx-pref-width: 100;"/>
+        <Separator/>
+    </VBox>
+
+    <VBox fx:id="historicalDataBox" spacing="20">
+        <HBox spacing="20">
+            <Label text="Community produced" style="-fx-font-size: 14;"/>
+            <Label fx:id="communityProducedLabel" text="143.024 kWh" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        </HBox>
+        <HBox spacing="52">
+            <Label text="Community used" style="-fx-font-size: 14;"/>
+            <Label fx:id="communityUsedLabel" text="130.101 kWh" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        </HBox>
+        <HBox spacing="102">
+            <Label text="Grid used" style="-fx-font-size: 14;"/>
+            <Label fx:id="gridUsedLabel" text="14.75 kWh" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+</VBox>
