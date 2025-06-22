@@ -11,6 +11,10 @@
     <modules>
         <module>gui</module>
         <module>api-service</module>
+        <module>energy-producer</module>
+        <module>energy-user</module>
+        <module>usage-service</module>
+        <module>percentage-service</module>
     </modules>
 
     <properties>
