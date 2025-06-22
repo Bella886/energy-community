@@ -1,9 +1,10 @@
 package com.energy.api.service;
 
-
 import com.energy.api.model.CurrentEnergyUsage;
+import com.energy.api.model.EnergyPercentage;
 import com.energy.api.model.HistoricalEnergyUsage;
 import com.energy.api.model.EnergyUsage;
+import com.energy.api.repository.EnergyPercentageRepository;
 import com.energy.api.repository.EnergyUsageRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,41 +18,36 @@ import java.util.List;
 public class EnergyService {
 
     private final EnergyUsageRepository energyUsageRepository;
+    private final EnergyPercentageRepository energyPercentageRepository;
 
-    public EnergyService(EnergyUsageRepository energyUsageRepository) {
+    public EnergyService(EnergyUsageRepository energyUsageRepository,
+                        EnergyPercentageRepository energyPercentageRepository) {
         this.energyUsageRepository = energyUsageRepository;
+        this.energyPercentageRepository = energyPercentageRepository;
     }
 
     public CurrentEnergyUsage getCurrentHourUsage() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime startOfHour = now.truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime startOfHour = now.truncatedTo(ChronoUnit.HOURS); // 当前到下一个小时
         LocalDateTime endOfHour = startOfHour.plusHours(1);
 
-        List<EnergyUsage> currentHourData = energyUsageRepository.findCurrentHourData(startOfHour, endOfHour);
+        List<EnergyPercentage> currentHourData = energyPercentageRepository.findCurrentHourData(startOfHour, endOfHour);
 
         if (currentHourData.isEmpty()) {
             return new CurrentEnergyUsage(0.0, 0.0);
         }
 
-        // Get the latest record for the current hour
-        EnergyUsage latestRecord = currentHourData.get(0);
+        EnergyPercentage latestRecord = currentHourData.get(0);
 
-        double totalUsed = latestRecord.getCommunityUsed() + latestRecord.getGridUsed();
-
-        if (totalUsed == 0) {
-            return new CurrentEnergyUsage(0.0, 0.0);
-        }
-
-        double communityDepleted = round(latestRecord.getCommunityUsed() / totalUsed * 100);
-        double gridPortion = round(latestRecord.getGridUsed() / totalUsed * 100);
-
-        return new CurrentEnergyUsage(communityDepleted, gridPortion);
+        return new CurrentEnergyUsage(
+                latestRecord.getCommunityDepleted(),
+                latestRecord.getGridPortion()
+        );
     }
 
     public HistoricalEnergyUsage getHistoricalUsage(LocalDateTime start, LocalDateTime end) {
         List<EnergyUsage> historicalData = energyUsageRepository.findByTimestampBetween(start, end);
 
-        System.out.println(start + " " + end);
         double communityProduced = 0.0;
         double communityUsed = 0.0;
         double gridUsed = 0.0;
